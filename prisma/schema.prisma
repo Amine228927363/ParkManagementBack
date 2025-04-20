@@ -11,7 +11,7 @@ model User {
   name      String
   email     String    @unique
   password  String
-  role      Role      @default(SOS_USER)
+  role      Role      @default(ADMIN)
   status    Status    @default(ACTIVE)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -49,6 +49,9 @@ model SupplierArrival {
   supplier     Supplier @relation(fields: [supplierId], references: [id])
   admin        User     @relation("ScheduledBy", fields: [scheduledBy], references: [id])
 
+  parkingSpace ParkingSpace? @relation
+  parkingSpaceId Int? @unique
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -70,6 +73,23 @@ model ArrivalRequest {
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+model ParkingSpace {
+  id          Int     @id @default(autoincrement())
+  spaceNumber Int     @unique
+  floor       Int?
+  section     String? 
+  status      ParkingStatus @default(AVAILABLE)
+
+  assignedArrival SupplierArrival? @relation(fields: [arrivalId], references: [id])
+  arrivalId       Int? @unique
+}
+
+enum ParkingStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  MAINTENANCE
 }
 
 enum RequestStatus {

@@ -1,6 +1,9 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
+import requestRoutes from './routes/requestRoutes'; 
+import supplierRoutes from './routes/supplierRoutes'; 
+ import parkingSpaceRoutes from './routes/parkingSpaceRoutes'; // Uncomment if needed
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -23,6 +26,9 @@ app.use(cors({
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes); // Add authentication routes
 app.use('/', userRoutes);
+app.use('/api/parkingSpaces', parkingSpaceRoutes); 
+app.use('/api/suppliers', supplierRoutes); 
+app.use('/api/requests', requestRoutes); 
 
 // Start server
 const startServer = async () => {
