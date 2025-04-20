@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(SOS_USER)
+  status    Status    @default(ACTIVE)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  scheduledArrivals SupplierArrival[] @relation("ScheduledBy")
+  sosUserRequests   ArrivalRequest[]  @relation("SosUserRequests")
+  adminDecisions    ArrivalRequest[]  @relation("AdminDecisions")
+}
+
+model Supplier {
+  id            Int               @id @default(autoincrement())
+  name          String
+  contactPerson String
+  phone         String
+  email         String
+  company       String
+  vehiclePlate  String
+  status        SupplierStatus    @default(ACTIVE)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  arrivals      SupplierArrival[]
+}
+
+model SupplierArrival {
+  id           Int       @id @default(autoincrement())
+  supplierId   Int
+  arrivalTime  DateTime
+  parkingSpot  String
+  status       ArrivalStatus @default(SCHEDULED)
+  notes        String?
+
+  scheduledBy  Int
+
+  supplier     Supplier @relation(fields: [supplierId], references: [id])
+  admin        User     @relation("ScheduledBy", fields: [scheduledBy], references: [id])
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+model ArrivalRequest {
+  id            Int          @id @default(autoincrement())
+  sosUserId     Int
+  supplierName  String
+  contactPerson String
+  phone         String
+  vehiclePlate  String
+  company       String
+  requestedTime DateTime
+  parkingSpot   String
+  status        RequestStatus  @default(PENDING)
+  decisionById  Int?          
+
+  sosUser       User     @relation("SosUserRequests", fields: [sosUserId], references: [id])
+  decisionBy    User?    @relation("AdminDecisions", fields: [decisionById], references: [id])
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+
+
+
+enum Role {
+  ADMIN
+  SOS_USER
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+enum SupplierStatus {
+  ACTIVE
+  BLOCKED
+}
+
+enum ArrivalStatus {
+  SCHEDULED
+  ARRIVED
+  CANCELLED
+}
+
