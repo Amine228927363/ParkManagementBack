@@ -97,6 +97,25 @@ export const getUserById = async (req: Request, res: Response) => {
     });
   }
 };
+//controller function to get all users where role ius SOS_User
+export const getSOSUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.findMany({
+      where: { role: 'SOS_USER' },
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    console.error('Error fetching SOS users:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to fetch SOS users',
+    });
+  }
+};
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.id, 10);

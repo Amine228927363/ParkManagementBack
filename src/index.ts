@@ -4,6 +4,7 @@ import authRoutes from './routes/authRoutes';
 import requestRoutes from './routes/requestRoutes'; 
 import supplierRoutes from './routes/supplierRoutes'; 
  import parkingSpaceRoutes from './routes/parkingSpaceRoutes'; // Uncomment if needed
+ import geminiModel from './routes/geminiModel'; // Adjust the import path as necessary
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -29,6 +30,7 @@ app.use('/', userRoutes);
 app.use('/api/parkingSpaces', parkingSpaceRoutes); 
 app.use('/api/suppliers', supplierRoutes); 
 app.use('/api/requests', requestRoutes); 
+app.use('/api', geminiModel);
 
 // Start server
 const startServer = async () => {
