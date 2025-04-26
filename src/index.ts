@@ -2,35 +2,31 @@ import express from 'express';
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
 import requestRoutes from './routes/requestRoutes'; 
+import accountRequestRoutes from './routes/accountRequest'; 
 import supplierRoutes from './routes/supplierRoutes'; 
- import parkingSpaceRoutes from './routes/parkingSpaceRoutes'; // Uncomment if needed
- import geminiModel from './routes/geminiModel'; // Adjust the import path as necessary
+ import parkingSpaceRoutes from './routes/parkingSpaceRoutes'; 
+ import geminiModel from './routes/geminiModel';
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import cors from 'cors';
-
 dotenv.config();
-
-// Initialize Express app
 const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 3000;
-
-// Middleware
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true,
 }));
-
-// Routes
 app.use('/api/users', userRoutes);
-app.use('/api/auth', authRoutes); // Add authentication routes
+app.use('/api/auth', authRoutes); 
 app.use('/', userRoutes);
 app.use('/api/parkingSpaces', parkingSpaceRoutes); 
 app.use('/api/suppliers', supplierRoutes); 
+app.use('/api/accountRequests', accountRequestRoutes);
 app.use('/api/requests', requestRoutes); 
 app.use('/api', geminiModel);
+
 
 // Start server
 const startServer = async () => {

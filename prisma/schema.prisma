@@ -61,12 +61,10 @@ model AccountRequest {
   name        String
   email       String    @unique
   phone       String?
-  department  String?
   message     String?
   status      RequestStatus @default(PENDING) // REJECTED, APPROVED, etc.
   reviewedBy  Int?
   reviewer    User?     @relation("ReviewedAccountRequests", fields: [reviewedBy], references: [id])
-
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
@@ -113,11 +111,6 @@ enum RequestStatus {
   APPROVED
   REJECTED
 }
-
-
-
-
-
 enum Role {
   ADMIN
   SOS_USER
