@@ -32,7 +32,7 @@ export const analyzeCarImage = async (filePath: string, model: any) => {
       Car Color: [text]
       `,
     ]);
-    
+    console.log("Generated response:", result.response.text());
     return result.response.text();
   } catch (error) {
     console.error("Error analyzing car image:", error);

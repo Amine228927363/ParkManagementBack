@@ -17,8 +17,7 @@ model User {
   updatedAt DateTime  @updatedAt
 
   scheduledArrivals SupplierArrival[] @relation("ScheduledBy")
-  sosUserRequests   ArrivalRequest[]  @relation("SosUserRequests")
-  adminDecisions    ArrivalRequest[]  @relation("AdminDecisions")
+  sosUserRequests   Arrival[]  @relation("SosUserRequests")
   reviewedRequests  AccountRequest[]  @relation("ReviewedAccountRequests")
 }
 
@@ -69,22 +68,17 @@ model AccountRequest {
   updatedAt   DateTime  @updatedAt
 }
 
-model ArrivalRequest {
+model Arrival {
   id            Int          @id @default(autoincrement())
   sosUserId     Int
   supplierName  String
-  contactPerson String
-  phone         String
+  companyName   String
   vehiclePlate  String
-  company       String
+  vehicleType   String
+  vehicleColor  String
   requestedTime DateTime
-  parkingSpot   String
-  status        RequestStatus  @default(PENDING)
-  decisionById  Int?          
-
+  parkingSpace   String
   sosUser       User     @relation("SosUserRequests", fields: [sosUserId], references: [id])
-  decisionBy    User?    @relation("AdminDecisions", fields: [decisionById], references: [id])
-
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -94,7 +88,6 @@ model ParkingSpace {
   floor       Int?
   section     String? 
   status      ParkingStatus @default(AVAILABLE)
-
   assignedArrival SupplierArrival? @relation(fields: [arrivalId], references: [id])
   arrivalId       Int? @unique
 }

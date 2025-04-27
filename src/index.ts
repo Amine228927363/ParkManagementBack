@@ -1,9 +1,9 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes';
 import authRoutes from './routes/authRoutes';
-import requestRoutes from './routes/requestRoutes'; 
 import accountRequestRoutes from './routes/accountRequest'; 
 import supplierRoutes from './routes/supplierRoutes'; 
+import arrivalRoutes from './routes/arrivalRoutes';
  import parkingSpaceRoutes from './routes/parkingSpaceRoutes'; 
  import geminiModel from './routes/geminiModel';
 import { PrismaClient } from '@prisma/client';
@@ -24,7 +24,7 @@ app.use('/', userRoutes);
 app.use('/api/parkingSpaces', parkingSpaceRoutes); 
 app.use('/api/suppliers', supplierRoutes); 
 app.use('/api/accountRequests', accountRequestRoutes);
-app.use('/api/requests', requestRoutes); 
+app.use('/api/arrival', arrivalRoutes); 
 app.use('/api', geminiModel);
 
 
