@@ -1,6 +1,6 @@
 //parking SpaceRoutes.ts
 import express from 'express';
-import { createParkingSpace, getAllParkingSpaces, getParkingSpaceById, updateParkingSpace, deleteParkingSpace } from '../controllers/parkingSpace';
+import { createParkingSpace, getAllParkingSpaces, getParkingSpaceById, updateParkingSpace, deleteParkingSpace,updateParkingSpaceBySpaceNumber } from '../controllers/parkingSpace';
 const router = express.Router();
 // Route for creating a new parking space
 router.post('/createParkingSpace', createParkingSpace);
@@ -10,6 +10,8 @@ router.get('/getAllParkingSpaces', getAllParkingSpaces);
 router.get('/getParkingSpace/:id', getParkingSpaceById);
 // Route for updating a parking space
 router.put('/updateParkingSpace/:id', updateParkingSpace);
+//Route for updating a parking space by space number
+router.put('/updateParkingSpaceBySpaceNumber/:spaceNumber', updateParkingSpaceBySpaceNumber);
 // Route for deleting a parking space
 router.delete('/deleteParkingSpace/:id', deleteParkingSpace);
 // Export the router

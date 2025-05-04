@@ -40,18 +40,13 @@ model SupplierArrival {
   id           Int       @id @default(autoincrement())
   supplierId   Int
   arrivalTime  DateTime
-  parkingSpot  String
   status       ArrivalStatus @default(SCHEDULED)
   notes        String?
-
   scheduledBy  Int
-
   supplier     Supplier @relation(fields: [supplierId], references: [id])
   admin        User     @relation("ScheduledBy", fields: [scheduledBy], references: [id])
-
   parkingSpace ParkingSpace? @relation
-  parkingSpaceId Int? @unique
-
+  parkingSpaceId Int? 
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

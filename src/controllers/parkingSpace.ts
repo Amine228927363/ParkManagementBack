@@ -80,22 +80,19 @@ export const getParkingSpaceById = async (req: Request, res: Response, next: Nex
 export const updateParkingSpace = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const { spaceNumber, floor, section, status } = req.body;
+        const {  status } = req.body;
         // Validate request body
-        if (!spaceNumber || !floor || !section || status === undefined) {
+        if ( status === undefined) {
             return res.status(400).json({
                 success: false,
-                message: 'Space number, floor, section, and status are required'
+                message: ' status are required'
             });
         }
         // Update the parking space
         const updatedParkingSpace = await prisma.parkingSpace.update({
             where: { id: Number(id) },
             data: {
-                spaceNumber,
-                floor,
-                section,
-                status,
+                status
             },
         });
         // Return success response
@@ -132,3 +129,35 @@ export const deleteParkingSpace = async (req: Request, res: Response, next: Next
         });
     }
 }
+//update parking space by sapce number
+export const updateParkingSpaceBySpaceNumber = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { spaceNumber } = req.params;
+        const { status } = req.body;
+        // Validate request body
+        if (status === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: 'Status is required'
+            });
+        }
+        // Update the parking space by space number
+        const updatedParkingSpace = await prisma.parkingSpace.updateMany({
+            where: { spaceNumber: Number(spaceNumber) },
+            data: {
+                status
+            },
+        });
+        // Return success response
+        return res.status(200).json({
+            success: true,
+            data: updatedParkingSpace
+        });
+    } catch (error) {
+        console.error('Error updating parking space by space number:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to update parking space by space number'
+        });
+    }
+};

@@ -84,14 +84,8 @@ export const getSupplierById = async (req: Request, res: Response, next: NextFun
 export const updateSupplier = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        const { name, email, phone } = req.body;
+        const { name, email, phone,contactPerson,status} = req.body;
         // Validate request body
-        if (!name || !email || !phone) {
-            return res.status(400).json({
-                success: false,
-                message: 'Name, email, and phone are required'
-            });
-        }
         // Update the supplier
         const supplier = await prisma.supplier.update({
             where: { id: Number(id) },
@@ -99,6 +93,8 @@ export const updateSupplier = async (req: Request, res: Response, next: NextFunc
                 name,
                 email,
                 phone,
+                contactPerson,
+                status
             },
         });
         // Return success response

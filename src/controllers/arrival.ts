@@ -112,7 +112,35 @@ export const getArrivalById = async (req: Request, res: Response) => {
   }
 };
 
-// ✅ Delete an arrival request
+// ✅ Delete an arrival by vehicle plate
+export const deleteArrivalByVehiclePlate = async (req: Request, res: Response) => {
+  try {
+    const { vehiclePlate } = req.params;
+    
+    // Validate vehicle plate
+    if (!vehiclePlate) {
+      return res.status(400).json({ success: false, message: 'Numéro de plaque invalide' });
+    }
+
+    // Check if record exists before attempting to delete
+    const existingRequest = await prisma.arrival.findMany({
+      where: { vehiclePlate },
+    });
+
+    if (!existingRequest) {
+      return res.status(404).json({ success: false, message: 'Demande introuvable' });
+    }
+
+    await prisma.arrival.deleteMany({ 
+      where: { vehiclePlate } 
+    });
+    
+    res.json({ success: true, message: 'Demande supprimée avec succès' });
+  } catch (error) {
+    console.error('Erreur suppression demande :', error);
+    res.status(500).json({ success: false, message: 'Erreur serveur' });
+  }
+}
 export const deleteArrivalRequest = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

@@ -6,6 +6,7 @@ import supplierRoutes from './routes/supplierRoutes';
 import arrivalRoutes from './routes/arrivalRoutes';
  import parkingSpaceRoutes from './routes/parkingSpaceRoutes'; 
  import geminiModel from './routes/geminiModel';
+import supplierArrivalRoutes from './routes/supplierArrivalRoutes'; 
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -26,6 +27,7 @@ app.use('/api/suppliers', supplierRoutes);
 app.use('/api/accountRequests', accountRequestRoutes);
 app.use('/api/arrival', arrivalRoutes); 
 app.use('/api', geminiModel);
+app.use('/api/supplierArrivals', supplierArrivalRoutes);
 
 
 // Start server
